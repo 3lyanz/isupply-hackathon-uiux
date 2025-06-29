@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: const Text(
-                      '3',
+                      '4',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,

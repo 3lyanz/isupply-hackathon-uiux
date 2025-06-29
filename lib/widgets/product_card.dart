@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../theme/app_colors.dart';
 
 class ProductCard extends StatefulWidget {
   final String title;
@@ -47,13 +48,25 @@ class _ProductCardState extends State<ProductCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF004A99),
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF004A99),
+                      ),
+                    ),
+                    if (widget.isManufacturer) ...[
+                      SizedBox(width: 4.w),
+                      Icon(
+                        Icons.factory,
+                        size: 16.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ],
+                  ],
                 ),
                 if (widget.discount > 0)
                   Container(
@@ -73,6 +86,33 @@ class _ProductCardState extends State<ProductCard> {
                   ),
               ],
             ),
+            if (widget.isCosmetic)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size(0, 0), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        child: Container(
+                          padding: EdgeInsets.all(8.w),
+                          child: Image.asset(widget.imageUrl, fit: BoxFit.contain),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'View photo',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: AppColors.skyBlue,
+                      decoration: TextDecoration.underline,
+                      fontFamily: 'Cairo',
+                    ),
+                  ),
+                ),
+              ),
             SizedBox(height: 8.h),
 
             // Middle Row: Image + Info
@@ -87,7 +127,22 @@ class _ProductCardState extends State<ProductCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('From: ${widget.seller}', style: TextStyle(fontSize: 12.sp)),
+                      Row(
+                        children: [
+                          Text(
+                            'From: ${widget.seller}',
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          if (widget.isTrustedSeller) ...[
+                            SizedBox(width: 4.w),
+                            Icon(
+                              Icons.handshake,
+                              size: 14.sp,
+                              color: const Color(0xFF009FE3),
+                            ),
+                          ],
+                        ],
+                      ),
                       SizedBox(height: 4.h),
                       Text('Consumer: ${widget.consumerPrice.toStringAsFixed(2)} EGP',
                           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
@@ -98,11 +153,11 @@ class _ProductCardState extends State<ProductCard> {
                           RichText(
                             text: TextSpan(
                               text: 'Pharmacy: ',
-                              style: TextStyle(fontSize: 16.sp, color: Colors.black),
+                              style: TextStyle(fontSize: 16.sp, color: Colors.black, fontFamily: 'Cairo'),
                               children: [
                                 TextSpan(
                                   text: '${widget.pharmacyPrice.toStringAsFixed(2)} EGP',
-                                  style: TextStyle(color: const Color(0xFF004A99), fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: const Color(0xFF004A99), fontWeight: FontWeight.bold, fontFamily: 'Cairo'),
                                 ),
                               ],
                             ),
@@ -153,36 +208,37 @@ class _ProductCardState extends State<ProductCard> {
 
             SizedBox(height: 12.h),
 
-            // Bottom buttons: Bundle Quota + View Offer
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF83D0F5),
-                    borderRadius: BorderRadius.circular(8.r),
+            // Promotion buttons (Bundle Quota & View Offer)
+            if (widget.hasPromotion)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.skyBlue,
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    child: Text(
+                      'Bundle Quota',
+                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  child: Text(
-                    'Bundle Quota',
-                    style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: Colors.white),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: Color(0xFF004A99)),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+                    ),
+                    child: Text(
+                      'View offer',
+                      style: TextStyle(color: const Color(0xFF004A99), fontSize: 12.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Color(0xFF004A99)),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-                  ),
-                  child: Text(
-                    'View offer',
-                    style: TextStyle(color: const Color(0xFF004A99), fontSize: 12.sp, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/loading_overlay.dart';
 
 class OptimizedProduct {
   final String name;
@@ -120,8 +121,16 @@ class BestInvoiceScreen extends StatelessWidget {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                // TODO: Implement order processing
+              onPressed: () async {
+                LoadingOverlay.show(context);
+                await Future.delayed(const Duration(seconds: 2));
+                LoadingOverlay.hide();
+                // TODO: Replace with real processing result
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invoice generated successfully')),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
