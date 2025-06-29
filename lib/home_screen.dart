@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color(0xFF83D0F5),
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: _showSearchBar
+       /* title: _showSearchBar
             ? TextField(
                 autofocus: true,
                 style: TextStyle(fontSize: 13.sp),
@@ -47,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Handle search
                   Navigator.pushNamed(context, '/search', arguments: value);
                 },
-              )
-            : Align(
+              )*/
+            title : Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 0.0),
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
         actions: [
-          if (!_showSearchBar) ...[  // Only show these icons when search bar is hidden
+          /*if (!_showSearchBar) ...[  // Only show these icons when search bar is hidden
             IconButton(
               icon: const Icon(
                 Icons.search,
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _showSearchBar = true;
                 });
               },
-            ),
+            ),*/
             Stack(
               alignment: Alignment.center,
               children: [
@@ -145,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ],
-        ],
       ),
       body: Container(
         // Add this Container with decoration for background image
@@ -223,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),),
                     ),
                     
-                    const SizedBox(height: 16),
+
                     
                     // Best Invoice Banner
                     const BestInvoiceWidget(),
@@ -239,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       children: const [
                         FeatureCard(
-                          title: 'Best Price',
+                          title: 'Best Prices',
                           subtitle: 'List of over 10,000 best prices',
                           icon: Icons.attach_money,
                           iconColor: Color(0xFF4CAF50),
